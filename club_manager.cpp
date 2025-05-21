@@ -1,4 +1,5 @@
 #include <cmath>
+#include <cctype>
 #include <fstream>
 #include <queue>
 #include <map>

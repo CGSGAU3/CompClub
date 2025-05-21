@@ -1,4 +1,6 @@
 #include <string>
+#include <cstring>
+#include <cctype>
 
 #include "addon.h"
 
@@ -42,7 +44,12 @@ std::vector<std::string> split( const std::string &str, char delim )
 
 Time::Time( const std::string &timeStr )
 {
-  std::vector<std::string> hm = split(timeStr, ':');
+  std::string tempTime = timeStr;
+
+  while (isspace((unsigned char)tempTime.back()))
+    tempTime = tempTime.substr(0, tempTime.length() - 1);
+
+  std::vector<std::string> hm = split(tempTime, ':');
 
   if (hm.size() != 2 || hm[0].length() != 2 || hm[1].length() != 2)
     throw std::invalid_argument("Error in delimiters!");
@@ -51,7 +58,8 @@ Time::Time( const std::string &timeStr )
     throw std::invalid_argument("Time is not integer!");
 
   if (hour < 0 || hour > 23 || minute < 0 || minute > 59)
-    throw std::invalid_argument("Impossible time!");}
+    throw std::invalid_argument("Impossible time!");
+}
 
 bool Time::operator <( const Time &other ) const
 {
